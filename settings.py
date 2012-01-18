@@ -206,4 +206,10 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
 
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = ''
+
+GITHUB_APP_ID = ''
+GITHUB_API_SECRET = ''
+
 from local_settings import *
