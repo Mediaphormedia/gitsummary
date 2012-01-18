@@ -1,0 +1,9 @@
+.removeButton {
+	display: none;
+}
+li.active .removeButton {
+	display: inline-block;
+}
+li.active .addButton {
+	display: none;
+}

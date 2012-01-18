@@ -1,0 +1,21 @@
+#deploySelect {
+	vertical-align: middle;
+}
+#template {
+	visibility: hidden;
+	-webkit-transition: height 0.5s ease;
+	-moz-transition: height 0.5s ease;
+	transition: height 0.5s ease;
+	height: 0;
+}
+#template.open {
+	visibility: visible;
+	height: 164px;
+}
+#preview textarea {
+	margin-top: 10px;
+}
+#template textarea {
+	height: 144px;
+	background: #ddd;
+}

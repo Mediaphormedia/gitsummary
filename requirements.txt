@@ -1,0 +1,28 @@
+-e git://github.com/PaulUithol/backbone-tastypie.git@47fee25084619a01a8596385393671bc3737d2f5#egg=Backbone_tastypie-dev
+DateUtils==0.5.1
+Django==1.3.1
+South==0.7.3
+async==0.6.1
+certifi==0.0.6
+distribute==0.6.19
+django-appconf==0.4.1
+-e git://github.com/tzangms/django-bootstrap-form.git@5518ac1c2e3fc64b549621d4f558256123c71382#egg=django_bootstrap_form-dev
+django-compressor==1.1.2
+django-extensions==0.7.1
+django-gravatar==0.1.0
+django-social-auth==0.6.1
+django-tastypie==0.9.11
+django-timezones==0.2
+httplib2==0.6.0
+lxml==2.3.3
+mimeparse==0.1.3
+oauth2==1.5.211
+poster==0.8.1
+psycopg2==2.2.0
+python-dateutil==1.5
+python-openid==2.2.5
+pytz==2011n
+requests==0.9.1
+simplejson==2.1.2
+python-memcached==1.48
+django-debug-toolbar==0.9.4

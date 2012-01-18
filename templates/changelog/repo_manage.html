@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load to_json %}
+
+{% block repo_manage_ldmk %}active{% endblock %}
+
+{% block title %}Manage repos | {% endblock %}
+
+{% block extrahead %}
+  <link rel="stylesheet" href="{{STATIC_URL}}css/repo_manage.css">
+{% endblock %}
+
+{% block content %}
+<h1> Manage your repos</h1>
+<ul class="unstyled" id="repoList">
+  {% for org in user.get_profile.tracker.orgs %}
+  <li>
+    <h6>{{org.name}}</h6>
+    <ul class="unstyled">
+    {% for repo in org.repos.values %}
+      <li class="repo" data-org_name="{{ org.name }}" data-repo_name="{{repo.name }}" data-gh_api_url="{{ repo.url }}"><a href="#" class="addButton btn">Add</a><a href="#" class="removeButton btn">Remove</a> <a id="{{repo.name}}_ldmk" href="{% url repo_detail org.name,repo.name %}">{{repo.name}}</a> <a class="githubLink" href="{{repo.html_url}}">(View on Github)</a></li>
+    {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block extrabody %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/RepoListItemView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/SidebarRepoView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/SidebarOrgView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/SidebarView.js"></script>
+<script type="text/javascript" charset="utf-8">
+  window.repoCollection = new RepoCollection({{user.get_profile.repos|to_json}});
+  window.orgCollection = new OrgCollection({{user.orgs.all|to_json}});
+  
+  $().ready(function() {
+    window.repoListItemViews = _.map($('#repoList li.repo'), function(elem) {
+      return new RepoListItemView({
+        el: elem
+      });
+    }, this);
+    window.sidebarView = new SidebarView({
+      el: $('#repoMenu')
+    })
+  });
+</script> 
+{% endblock %}

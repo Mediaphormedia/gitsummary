@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load to_json %}
+
+{% block home_ldmk %}active{% endblock %}
+
+{% block content %}
+{% if user.is_anonymous %}
+	<div class="span16">
+		<a href="{% url socialauth_begin 'github' %}" class="btn">Enter using GitHub</a>
+	</div>
+{% else %}
+{% if not user.get_profile.repos %}
+<p>Looks like you haven’t added any repo, yet. <a href="{% url repo_manage %}" class="btn">Add some repos</a></p>
+{% endif %}
+{% endif %}
+{% endblock %}

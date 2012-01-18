@@ -1,0 +1,25 @@
+body {
+	padding-top: 60px;
+}
+.accessibile {
+	visibility: hidden;
+}
+.gravatar img {
+	vertical-align: middle;
+}
+#sidebar a.active {
+	font-weight: bold;
+}
+.githubLink {
+    display: none;
+}
+h1 .btn,
+h2 .btn,
+h3 .btn,
+h4 .btn,
+h5 .btn,
+h6 .btn
+{
+	font-weight: normal;
+	vertical-align: middle;
+}

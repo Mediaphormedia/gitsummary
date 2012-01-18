@@ -1,0 +1,133 @@
+{% load gravatar %}<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!-- Consider adding an manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/b/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>{% block title%}{% endblock %}Gitsummary</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+
+  <!-- CSS: implied media=all -->
+  <!-- CSS concatenated and minified via ant build script-->
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  <link rel="stylesheet" href="{{STATIC_URL}}css/style.css">
+  <!-- end CSS-->
+
+  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+
+  <!-- All JavaScript at the bottom, except for Modernizr / Respond.
+       Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+       For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+  <script src="{{STATIC_URL}}js/libs/modernizr-2.0.6.min.js"></script>
+  {% block extrahead %}{% endblock %}
+</head>
+
+<body>
+
+  <div id="container" class="container">
+    <header class="row">
+
+      <div class="topbar-wrapper" style="z-index: 5;">
+      <div class="topbar" data-dropdown="dropdown">
+        <div class="topbar-inner">
+          <div class="container">
+            <h3><a href="{% url home %}">Gitsummary</a></h3>
+            <ul class="nav">
+              {% if user.is_authenticated %}
+              <li class="{% block repo_manage_ldmk %}{% endblock %}"><a href="{% url repo_manage %}">Manage repos</a></li>
+              <li class="{% block profile_ldmk %}{% endblock %}"><a href="{% url userprofile_detail %}"><span class="gravatar">{% gravatar user 18 %}</span> Settings</a></li>
+              <li><a href="{% url accounts_logout %}">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div><!-- /topbar-inner -->
+      </div><!-- /topbar -->
+    </div>
+    
+    </header>
+    <div id="main" role="main" class="row">
+      <div id="sidebar" class="span3">
+        {% if user.is_authenticated %}
+        <h3>Your repos</h3>
+        <ul class="unstyled" id="repoMenu">
+          {% for org in user.orgs.all %}
+          <li class="org" data-name="{{org.name}}">
+            <h6 data-href="{% url api_dispatch_detail api_name='v1',resource_name='org',pk=org.id %}">{{org}}</h6>
+            <ul class="unstyled">
+            {% for repo in org.repos.values %}
+              <li class="repo" data-name="{{repo.name}}"><a id="{{repo.name}}_ldmk" href="{% url repo_detail org,repo.name %}">{{repo.name}}</a></li>
+            {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+        {% if not user.get_profile.repos %}
+        <p>You aren’t tracking any repo. <a href="{% url repo_manage %}" class="btn">Add some repos</a></p>
+        {% endif %}
+        {% endif %}
+      </div>
+      <div id="content" class="span13">
+      {% block content %}{% endblock %}
+      </div>
+    </div>
+    <footer class="row">
+
+    </footer>
+  </div> <!--! end of #container -->
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{STATIC_URL}}js/libs/jquery-1.6.2.min.js"><\/script>')</script>
+
+  {% if user.is_authenticated %}
+  <script type="text/javascript">
+  $.ajaxSetup({
+    'headers': {'Authorization': '{{user.api_key.key}}'}
+  })
+</script>
+  {% endif %}
+
+
+  <!-- scripts concatenated and minified via ant build script-->
+  <script defer src="{{STATIC_URL}}js/plugins.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/date.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/underscore-min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/backbone-min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models/Org.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models/RepoSetting.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models/Repo.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models/Comment.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collections/OrgCollection.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collections/RepoCollection.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collections/CommentCollection.js"></script>
+  {% block extrabody %}{% endblock %}
+  <!-- end scripts-->
+
+	
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+  
+</body>
+</html>

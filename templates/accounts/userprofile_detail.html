@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block profile_ldmk %}active{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form action="." method="post">
+		{% csrf_token %}
+		<fieldset>
+			<legend>Settings</legend>
+			{{ settings_form|bootstrap }}
+			<div class="clearfix">
+				<label>Github access token</label>
+				<div class="input span6">
+		            <input type="text" value="{{user.get_profile.github_access_token}}" disabled>
+		        </div>
+		    </div>
+		</fieldset>
+	    <div class="actions">
+	        <button type="submit" class="btn primary">Update</button>
+    	</div>
+    </form>
+	</div>	
+{% endblock %}

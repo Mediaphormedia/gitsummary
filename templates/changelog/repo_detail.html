@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load compress to_json %}
+
+{% block title %}{{ object_model.name }} | {{ object_model.org.name }} | {% endblock %}
+
+{% block extrahead %}
+  <link rel="stylesheet" href="{{STATIC_URL}}css/repo_detail.css">
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+	<div class="span13">
+		<h1>{{object_model.org.name}}/{{object_model.name}} <a class="btn" id="repoSettingsButton" href="{% url repo_settings repo_name=object_model.name,org_name=object_model.org.name %}">Edit settings</a></h1>
+	</div>
+</div>
+<div class="row">
+	<h2 class="span13">Relevant commits since
+	    <select name="deploySelect" id="deploySelect">
+	    {% for deploy in object.deploys %}
+	        <option {% if deploy.ref == selected_deploy.ref %}selected{% endif %} value="{{deploy.tag_name}}">{{deploy.tag_name}}</option>
+	    {% endfor %}
+	    </select>
+	</h2>
+</div>
+<div class="row">
+	{% include "changelog/changelog.html" %}
+</div>
+{% if changelog.commits %}
+<hr>
+<div class="row" id="preview">
+	<h2 class="span13">Summary <a id="templateBtn" class="btn" href="#">Edit Template</a></h2>
+	<div id="template" class="span13">
+		<textarea id="templateCode" class="span13" rows="8" data-reposetting="{% url api_dispatch_detail api_name='v1',resource_name='reposetting',pk=object_model.settings.id %}">{{ object_model.settings.changelog_template|safe}}</textarea>
+	</div>
+	<textarea id="output" class="span13" rows="20"></textarea>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extrabody %}
+<script type="text/javascript" charset="utf-8">
+	$().ready(function() {
+		$('#{{object.name}}_ldmk').addClass('active');
+		$('#deploySelect').change(function(e) {
+			url = '{{ object_model.get_absolute_url }}'+$(this).val();
+			window.location.pathname = url;
+		});
+	});
+</script>
+{% if changelog.commits %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models/Ticket.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collections/TicketCollection.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/TicketView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/CommentView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/ChangelogView.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views/PreviewView.js"></script>
+<script type="text/javascript" charset="utf-8">
+	window.commentsCollection = new CommentCollection({{comments|to_json}});
+	
+	$().ready(function() {
+		window.changelog = new ChangelogView({
+			el: $('#repoTable')
+		});
+		window.preview = new PreviewView({
+			el: $('#preview')
+		});
+	});
+	
+</script>
+{% endif %}
+{% endblock %}

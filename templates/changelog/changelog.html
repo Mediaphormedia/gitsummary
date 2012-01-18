@@ -1,0 +1,54 @@
+{% load humanize changelog %}
+
+{% if changelog.commits %}
+<table class="zebra-striped span13" id="repoTable" data-repo="{% url api_dispatch_detail api_name='v1',resource_name='repo',pk=object_model.id %}" data-org_name="{{ object.org.login }}"data-user="{% url api_dispatch_detail api_name='v1',resource_name='user',pk=user.id %}">
+<thead>
+    <tr>
+        <th>&nbsp;</th>
+        <th>Date</th>
+        <th>Commit</th>
+        <th>Summary</th>
+        <th>Author</th>
+        <th>Related Tickets</th>
+        <th>Comment</th>
+    </tr>
+</thead>
+<tbody>
+{% for commit_container in changelog.commits %}
+{% with commit_container.commit as commit %}
+{% comment_for_commit commit as comment %}
+
+<tr class="commit" data-commit_sha="{{commit.sha}}" data-commit_datetime="{{commit.datetime|date:"r"}}">
+    <td>
+        <input type="checkbox" name="include" value="{{commit.sha}}" {% if comment.include %}checked{% endif%}>
+    </td>
+    <td><p class="commit_date">{{commit.datetime|naturalday}}</p></td>
+    <td><a class="commit_sha" data-commit_sha="{{commit.sha}}" href="{{commit.github_url}}" target="_blank" title="{{commit.sha}}">{{commit.sha|slice:":10"}}&hellip;</a></td>
+    <td class="message"><p title="{{commit.message}}" data-short_message="{{commit.message|truncatewords:8}}"><input type="checkbox" name="include_commit_message" {% if comment.include_commit_message %}checked{% endif%}> <span class="messageText">{{commit.message|truncatewords:8}}</span> <a class="readmore" href="#">Read more</a></p></td>
+    <td class="author">{{commit.author.name}}</td>
+    <td>
+        {% if commit_container.tickets %}
+        <ul class="unstyled">
+        {% for ticket in commit_container.tickets %}
+        {% with ticket|ticket_in_db as ticket_model %}
+        {% ticket_for_comment comment ticket.unicode as comment_ticket %}
+            <li class="ticket" {% if ticket_model %}data-resource_uri="{% url api_dispatch_detail api_name='v1',resource_name='ticket',pk=ticket_model.id %}"{% endif %} data-number="{{ticket.number}}" data-source="{{ticket.tracker}}" data-title="{{ticket.title}}"><input type="checkbox" name="include_ticket-{{ticket.tracker}}-{{ticket.number}}" {% if comment_ticket %}checked{% endif%}> <a href="{{ticket.url}}" target="_blank">[#{{ticket.unicode}}] {{ticket.title}}{% if not forloop.last %}, {% endif %}</a></li>
+        {% endwith %}
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </td>
+    <td>
+        <textarea rows="5">{{ comment.content }}</textarea>
+    </td>
+</tr>
+{% endwith %}
+{% endfor %}
+</form>
+</tbody>
+</table>
+{% else %}
+<div class="alert-message block-message info">
+    <p>There aren’t any relevant commits, yet.</p>
+</div>
+{% endif %}
