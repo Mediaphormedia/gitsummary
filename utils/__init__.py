@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 import logging
 
-# Backported form jdano 1,4
+# Backported form Django 1.4
 reverse_lazy = lazy(reverse, str)
 
 

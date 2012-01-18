@@ -146,7 +146,6 @@ class Repo(GitHubObject):
         except RepoSetting.DoesNotExist:
             self.prefs = RepoDefaultPrefs()
         self.deploy_datetime_regex = re.compile(self.prefs.deploy_datetime_regex)
-        #self.deploys_start_with = deploys_start_with
         self.refs = []
 
     def __getattr__(self, name):

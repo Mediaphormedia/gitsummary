@@ -148,7 +148,7 @@ class RepoSettingAuthorization(CommentAuthorization):
 
 
 class RepoSettingResource(ModelResource):
-    repo = fields.ForeignKey(RepoResource, 'repo')
+    repo = fields.OneToOneField(RepoResource, 'repo')
 
     class Meta:
         queryset = RepoSetting.objects.all()
