@@ -6,9 +6,9 @@ var RepoListItemView = Backbone.View.extend({
 	},
 	initialize: function() {
 		_.bindAll(this, 'addOrg', 'addRepo');
-		this.org_name = $(this.el).attr('data-org_name');
-		this.repo_name = $(this.el).attr('data-repo_name');
-		this.gh_api_url = $(this.el).attr('data-gh_api_url');
+		this.org_name = $(this.el).data('org_name');
+		this.repo_name = $(this.el).data('repo_name');
+		this.gh_api_url = $(this.el).data('gh_api_url');
 		this.model = window.repoCollection.find(function(model) {
 			return model.get('name') == this.repo_name;
 		}, this);

@@ -11,7 +11,7 @@ var PreviewView = Backbone.View.extend({
 		this.templateElement = this.$('#templateCode');
 		this.template_content = '';
 		this.setting = new RepoSetting({
-			'resource_uri': this.templateElement.attr('data-reposetting')
+			'resource_uri': this.templateElement.data('reposetting')
 		});
 		this.setting.fetch({'success': this.bindSetting});
 		this.output = this.$('#output');

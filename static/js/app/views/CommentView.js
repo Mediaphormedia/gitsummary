@@ -8,8 +8,8 @@ var CommentView = Backbone.View.extend({
 	initialize: function(options) {
 		_.bindAll(this, 'saveText', 'addComment');
 		this.parentView = options.parentView;
-		this.commit_sha = $(this.el).attr('data-commit_sha');
-		this.commit_datetime = new Date($(this.el).attr('data-commit_datetime'));
+		this.commit_sha = $(this.el).data('commit_sha');
+		this.commit_datetime = new Date($(this.el).data('commit_datetime'));
 		this.collection = window.commentsCollection;
 		this.textarea = this.$('textarea');
 		this.model = this.collection.find(function(model) {
@@ -75,7 +75,7 @@ var CommentView = Backbone.View.extend({
 		messageElement = this.$('.messageText');
 		parentElement = $(e.currentTarget).parent();
 		if (parentElement.hasClass('open')) {
-			shortText = parentElement.attr('data-short_message');
+			shortText = $(parentElement).data('short_message');
 			messageElement.text(shortText);
 			parentElement.removeClass('open')
 			$(e.currentTarget).text('read more');

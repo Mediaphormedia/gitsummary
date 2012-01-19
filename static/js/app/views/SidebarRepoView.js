@@ -12,7 +12,7 @@ var SidebarRepoView = Backbone.View.extend({
 	      repo_name: this.model.get('name'),
 	      org_name: this.parentView.model.get('name')
 	    });
-	    $(this.el).attr('data-name', this.model.get('name'))
+	    $(this.el).attr('data-name', this.model.get('name'));
 	    $(this.el).append(html);
 	    return this;
 	},

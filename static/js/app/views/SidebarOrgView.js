@@ -15,7 +15,7 @@ var SidebarOrgView = Backbone.View.extend({
 	      org_id: this.model.get('id'),
 	      org_name: this.model.get('name')
 	    });
-		$(this.el).attr('data-name', this.model.get('name'))
+		$(this.el).attr('data-name', this.model.get('name'));
 	    $(this.el).append(html);
 	    return this;
 	},

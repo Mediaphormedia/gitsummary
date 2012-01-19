@@ -6,10 +6,10 @@ var TicketView = Backbone.View.extend({
 	initialize: function(options) {
 		this.parentView = options.parentView;
 		_.bindAll(this, 'addTicket');
-		number = parseInt($(this.el).attr('data-number'));
-		source = $(this.el).attr('data-source');
-		title = $(this.el).attr('data-title');
-		resource_uri = $(this.el).attr('data-resource_uri');
+		number = parseInt($(this.el).data('number'));
+		source = $(this.el).data('source');
+		title = $(this.el).data('itle');
+		resource_uri = $(this.el).data('resource_uri');
 		if (this.$('input').is(':checked')) {
 			this.model = this.parentView.model.tickets.get(resource_uri);
 		} else {
