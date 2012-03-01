@@ -1,0 +1,13 @@
+{% load to_json %}
+<ul class="unstyled">
+  {% for org in user.get_profile.tracker.orgs %}
+  <li>
+    <h6>{{org.name}}</h6>
+    <ul class="unstyled">
+    {% for repo in org.repos.values %}
+      <li class="repo" data-org_name="{{ org.name }}" data-repo_name="{{repo.name }}" data-gh_api_url="{{ repo.url }}"><a href="#" class="addButton btn">Add</a><a href="#" class="removeButton btn">Remove</a> <a id="{{repo.name}}_ldmk" href="{% url repo_detail org.name,repo.name %}">{{repo.name}}</a> <a class="githubLink" href="{{repo.html_url}}">(View on Github)</a></li>
+    {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>

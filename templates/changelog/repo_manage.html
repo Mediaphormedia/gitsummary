@@ -11,19 +11,9 @@
 
 {% block content %}
 <h1> Manage your repos</h1>
-<ul class="unstyled" id="repoList">
-  {% for org in user.get_profile.tracker.orgs %}
-  <li>
-    <h6>{{org.name}}</h6>
-    <ul class="unstyled">
-    {% for repo in org.repos.values %}
-      <li class="repo" data-org_name="{{ org.name }}" data-repo_name="{{repo.name }}" data-gh_api_url="{{ repo.url }}"><a href="#" class="addButton btn">Add</a><a href="#" class="removeButton btn">Remove</a> <a id="{{repo.name}}_ldmk" href="{% url repo_detail org.name,repo.name %}">{{repo.name}}</a> <a class="githubLink" href="{{repo.html_url}}">(View on Github)</a></li>
-    {% endfor %}
-    </ul>
-  </li>
-  {% endfor %}
-</ul>
-
+<div id="repoList">
+  <h6 id="loading">Loading <img src="{{ STATIC_URL }}img/ajax-loader.gif" height="11" width="16" alt="Loader" /></h6>
+</div>
 {% endblock %}
 
 {% block extrabody %}
@@ -36,11 +26,15 @@
   window.orgCollection = new OrgCollection({{user.orgs.all|to_json}});
   
   $().ready(function() {
-    window.repoListItemViews = _.map($('#repoList li.repo'), function(elem) {
-      return new RepoListItemView({
-        el: elem
-      });
-    }, this);
+
+    $('#repoList').load("{% url repos_list %}", function(html, status) {
+      window.repoListItemViews = _.map($('#repoList li.repo'), function(elem) {
+        return new RepoListItemView({
+          el: elem
+        });
+      }, this);
+    });
+
     window.sidebarView = new SidebarView({
       el: $('#repoMenu')
     })

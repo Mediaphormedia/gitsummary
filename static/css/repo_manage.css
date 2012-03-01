@@ -1,3 +1,7 @@
+#loading img {
+    position: relative;
+    top: 1px;
+}
 .removeButton {
 	display: none;
 }
