@@ -4,6 +4,15 @@ var SidebarView = Backbone.View.extend({
 		this.collection = window.orgCollection;
 		this.collection.bind('add', this.addOrg, this);
 		this.collection.bind('remove', this.removeOrg, this);
+		_.each(this.$('li.org'), function(org_elem) {
+			id = $(org_elem).data('href');
+			model = this.collection.get(id);
+			org = new SidebarOrgView({
+				parentView: this,
+				model: model,
+				el: org_elem
+			});
+		}, this);
 	},
 	addOrg: function(model) {
 		org = new SidebarOrgView({

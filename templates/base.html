@@ -65,8 +65,8 @@
         <h3>Your repos</h3>
         <ul class="unstyled" id="repoMenu">
           {% for org in user.orgs.all %}
-          <li class="org" data-name="{{org.name}}">
-            <h6 data-href="{% url api_dispatch_detail api_name='v1',resource_name='org',pk=org.id %}">{{org}}</h6>
+          <li class="org"  data-href="{% url api_dispatch_detail api_name='v1',resource_name='org',pk=org.id %}" data-name="{{org.name}}">
+            <h6>{{org}}</h6>
             <ul class="unstyled">
             {% for repo in org.repos.values %}
               <li class="repo" data-name="{{repo.name}}"><a id="{{repo.name}}_ldmk" href="{% url repo_detail org,repo.name %}">{{repo.name}}</a></li>

@@ -57,6 +57,8 @@ var RepoListItemView = Backbone.View.extend({
 				this.org.save({}, {
 					success: this.addOrg
 				});
+			} else {
+				this.addOrg();
 			}
 		}
 	},

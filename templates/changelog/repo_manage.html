@@ -22,10 +22,9 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/app/views/SidebarOrgView.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/app/views/SidebarView.js"></script>
 <script type="text/javascript" charset="utf-8">
-  window.repoCollection = new RepoCollection({{user.get_profile.repos|to_json}});
-  window.orgCollection = new OrgCollection({{user.orgs.all|to_json}});
-  
   $().ready(function() {
+    window.repoCollection = new RepoCollection({{user.get_profile.repos|to_json}});
+    window.orgCollection = new OrgCollection({{user.orgs.all|to_json}});
 
     $('#repoList').load("{% url repos_list %}", function(html, status) {
       window.repoListItemViews = _.map($('#repoList li.repo'), function(elem) {
@@ -37,7 +36,8 @@
 
     window.sidebarView = new SidebarView({
       el: $('#repoMenu')
-    })
+    });
+
   });
 </script> 
 {% endblock %}
