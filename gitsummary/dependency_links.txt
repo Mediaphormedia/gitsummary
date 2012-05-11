@@ -1,0 +1,2 @@
+https://github.com/PaulUithol/backbone-tastypie/tarball/master#egg=Backbone_tastypie-dev
+https://github.com/tzangms/django-bootstrap-form/tarball/master
